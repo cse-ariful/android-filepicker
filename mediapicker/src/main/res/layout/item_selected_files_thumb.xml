@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.nightcode.mediapicker.presentation.views.ClippedImageView
+            android:id="@+id/thumb"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/video_placeholder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="0dp"
+            android:background="@drawable/rounded_corner_4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="match_parent"/>
+    <ImageButton
+            android:id="@+id/remove"
+            app:layout_constraintBottom_toTopOf="@id/thumb"
+            app:layout_constraintTop_toTopOf="@id/thumb"
+            app:layout_constraintEnd_toEndOf="@id/thumb"
+            android:padding="4dp"
+            app:layout_constraintStart_toStartOf="@id/thumb"
+            android:background="@drawable/close_btn_bg"
+            app:tint="@color/white"
+            android:src="@drawable/ic_baseline_close_12"
+            android:layout_width="18dp"
+            android:layout_height="18dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
