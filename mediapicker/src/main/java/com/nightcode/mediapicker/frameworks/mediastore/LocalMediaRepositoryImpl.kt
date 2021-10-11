@@ -1,23 +1,33 @@
-package com.nightcode.mediapicker.data.repositories
+package com.nightcode.mediapicker.frameworks.mediastore
 
+import android.Manifest
 import android.content.ContentUris
 import android.content.Context
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
+import com.nightcode.mediapicker.data.repositories.LocalMediaRepository
 import com.nightcode.mediapicker.domain.common.ResultData
 import com.nightcode.mediapicker.domain.entities.FolderModel
 import com.nightcode.mediapicker.domain.entities.VideoModel
-import com.nightcode.mediapicker.domain.repository.LocalMediaRepository
 import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.util.*
 
 class LocalMediaRepositoryImpl constructor(private val context: Context) : LocalMediaRepository {
     override fun getAllVideos(parentFolder: String?): ResultData<List<VideoModel>> {
+        if (ContextCompat.checkSelfPermission(
+                context, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return ResultData.Error(IllegalStateException("Permission not granted"))
+        }
         return ResultData.Success(getAllVideoByFolder(parentFolder))
     }
 

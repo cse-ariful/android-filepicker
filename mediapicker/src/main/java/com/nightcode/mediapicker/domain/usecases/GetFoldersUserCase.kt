@@ -2,7 +2,7 @@ package com.nightcode.mediapicker.domain.usecases
 
 import com.nightcode.mediapicker.domain.common.ResultData
 import com.nightcode.mediapicker.domain.entities.FolderModel
-import com.nightcode.mediapicker.domain.repository.LocalMediaRepository
+import com.nightcode.mediapicker.data.repositories.LocalMediaRepository
 
 
 class GetFoldersUserCase(private val localMediaRepository: LocalMediaRepository):

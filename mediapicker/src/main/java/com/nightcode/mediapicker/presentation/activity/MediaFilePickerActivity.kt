@@ -1,7 +1,6 @@
 package com.nightcode.mediapicker.presentation.activity
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
@@ -14,21 +13,24 @@ import com.nightcode.mediapicker.domain.entities.VideoModel
 import com.nightcode.mediapicker.domain.interfaces.VideoPickerInterface
 import com.nightcode.mediapicker.presentation.ViewExtension.asVisibility
 import com.nightcode.mediapicker.domain.adapters.AbstractAdapter
-import com.nightcode.mediapicker.domain.interfaces.LayoutMode
-import com.nightcode.mediapicker.domain.interfaces.SortMode
+import com.nightcode.mediapicker.domain.constants.LayoutMode
+import com.nightcode.mediapicker.domain.constants.SortMode
 import com.nightcode.mediapicker.presentation.fragments.mediPicker.MediaPickerFragment
 import org.greenrobot.eventbus.EventBus
-import android.R.attr.data
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
+import android.view.View
 import android.widget.Toast
-import com.nightcode.mediapicker.data.repositories.LocalMediaRepositoryImpl
+import com.nightcode.mediapicker.frameworks.mediastore.LocalMediaRepositoryImpl
 import com.nightcode.mediapicker.domain.AppConstants
 import com.nightcode.mediapicker.domain.common.ResultData
 import com.nightcode.mediapicker.domain.usecases.GetVideoDetailsFromUriUseCase
+import com.nightcode.mediapicker.presentation.fragments.mediaList.MediaListFragment
+import com.nightcode.mediapicker.presentation.fragments.search.SearchFragment
 
 
-class FilePickerActivity :
+open class MediaFilePickerActivity :
     BaseActivity<ActivityFilePickerBinding>(ActivityFilePickerBinding::inflate),
     VideoPickerInterface {
     companion object {
@@ -105,6 +107,11 @@ class FilePickerActivity :
     private fun initToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+
+        }
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_toggle_mode -> {
@@ -123,6 +130,20 @@ class FilePickerActivity :
                 R.id.action_sort -> {
 
                 }
+                R.id.action_search -> {
+                    val ft = supportFragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.slide_up_low,
+                            R.anim.slide_down_low,
+                            R.anim.slide_up_low,
+                            R.anim.slide_down_low
+                        )
+                        .replace(binding.searchViewContainer.id, SearchFragment(), "TAG")
+                    ft.addToBackStack("TAG")
+                    ft.commitAllowingStateLoss()
+
+                }
             }
             binding.toolbar.invalidate()
             return@setOnMenuItemClickListener true
@@ -132,7 +153,6 @@ class FilePickerActivity :
     private fun notifyLayouType(gridMode: Boolean) {
 
     }
-
 
     override fun updateSelection(videoModel: VideoModel) {
         val currentItems = selectedFiles.value!!
@@ -144,6 +164,20 @@ class FilePickerActivity :
         }
         selectedFiles.postValue(currentItems)
 
+    }
+
+    override fun updateSelection(list: List<VideoModel>) {
+        Log.d(TAG, "updateSelection: ${list.size}")
+
+        val count = selectedFiles.value!!.size
+        val newList = selectedFiles.value!!.union(list).distinctBy { it.uri }.toMutableList()
+
+        Log.d(TAG, "updateSelection: ${newList.size}")
+        if (newList.size == count) {
+            selectedFiles.postValue(mutableListOf())
+        } else {
+            selectedFiles.postValue(newList)
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -160,6 +194,13 @@ class FilePickerActivity :
 
     override fun getLayoutMode(): LayoutMode {
         return LayoutMode.GRID
+    }
+
+    override fun onBackPressed() {
+        if ((mediaPickerFragment?.onBackPressed() == true)) {
+            return;
+        }
+        super.onBackPressed()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -180,4 +221,10 @@ class FilePickerActivity :
         }
     }
 
+    fun getViewObject(): ActivityFilePickerBinding {
+        return binding
+    }
+
+
 }
+

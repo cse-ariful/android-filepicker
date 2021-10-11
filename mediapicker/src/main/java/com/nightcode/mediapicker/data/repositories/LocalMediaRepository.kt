@@ -1,4 +1,4 @@
-package com.nightcode.mediapicker.domain.repository
+package com.nightcode.mediapicker.data.repositories
 
 import android.net.Uri
 import com.nightcode.mediapicker.domain.common.ResultData

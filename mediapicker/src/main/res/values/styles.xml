@@ -5,4 +5,9 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">#656464</item>
     </style>
+
+    <style name="MyAlertDialogTheme" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowMinWidthMajor">70%</item>
+        <!--        <item name="windowFixedWidthMinor">90%</item>-->
+    </style>
 </resources>

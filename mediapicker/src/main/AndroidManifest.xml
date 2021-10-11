@@ -8,7 +8,7 @@
 
     <application android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".presentation.activity.FilePickerActivity"
+            android:name=".presentation.activity.MediaFilePickerActivity"
             android:exported="true" />
         <meta-data
             android:name="preloaded_fonts"

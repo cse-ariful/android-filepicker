@@ -12,20 +12,40 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?android:windowBackground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tabIndicatorColor="@color/color_blue_dark"
-            app:tabIndicatorHeight="1dp"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/color_blue_dark"
-            app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            app:tabTextColor="@color/white" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="?android:windowBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabIndicatorColor="@color/color_blue_dark"
+                app:tabIndicatorHeight="1dp"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/color_blue_dark"
+                app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                app:tabTextColor="@color/white" />
+
+            <TextView
+                android:id="@+id/select_all"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textAllCaps="true"
+                android:textColor="?colorPrimary"
+                android:background="?selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select All" />
+
+        </LinearLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager2"

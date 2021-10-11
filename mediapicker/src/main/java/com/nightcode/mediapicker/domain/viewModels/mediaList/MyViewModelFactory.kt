@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModel
 import com.nightcode.mediapicker.domain.usecases.GetVideosUseCase
-import com.nightcode.mediapicker.data.repositories.LocalMediaRepositoryImpl
+import com.nightcode.mediapicker.frameworks.mediastore.LocalMediaRepositoryImpl
 import java.lang.IllegalArgumentException
 
 class MyViewModelFactory(private val mApplication: Context) :

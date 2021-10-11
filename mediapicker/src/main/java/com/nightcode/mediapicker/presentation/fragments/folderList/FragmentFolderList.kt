@@ -2,9 +2,10 @@ package com.nightcode.mediapicker.presentation.fragments.folderList
 
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.nightcode.mediapicker.R
-import com.nightcode.mediapicker.data.repositories.LocalMediaRepositoryImpl
+import com.nightcode.mediapicker.frameworks.mediastore.LocalMediaRepositoryImpl
 import com.nightcode.mediapicker.databinding.FragmentFolderListBinding
 import com.nightcode.mediapicker.databinding.ItemFolderListBinding
 import com.nightcode.mediapicker.domain.common.ResultData
@@ -17,10 +18,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.nightcode.mediapicker.domain.adapters.AbstractAdapter
+import com.nightcode.mediapicker.domain.interfaces.MediaFragment
 import org.arif.converter.fragments.BaseFragment
 
 class FragmentFolderList :
-    BaseFragment<FragmentFolderListBinding>(FragmentFolderListBinding::inflate) {
+    BaseFragment<FragmentFolderListBinding>(FragmentFolderListBinding::inflate), MediaFragment {
+    companion object {
+        private const val FOLDER_FRAGMENT_TAG = "SUB_FOLDER_TAG"
+    }
+
     private val getFolderUseCase: GetFoldersUserCase by lazy {
         GetFoldersUserCase(
             LocalMediaRepositoryImpl(
@@ -50,7 +56,7 @@ class FragmentFolderList :
                     putLong("init_delay", 200)
                     putString("folder_name", item.title)
                 }
-            }, "TAG",
+            }, FOLDER_FRAGMENT_TAG,
             enterAnimation = R.anim.slide_up,
             exitAnimation = R.anim.slide_down,
             popEnterAnimation = R.anim.slide_up,
@@ -75,4 +81,21 @@ class FragmentFolderList :
             }
         }
     }
+
+    override fun toggleSelectAll() {
+        childFragmentManager.findFragmentByTag(FOLDER_FRAGMENT_TAG)?.let {
+            if (it is MediaFragment) {
+                it.toggleSelectAll()
+            }
+        }
+    }
+
+    override fun handleBackPress(): Boolean {
+        if (childFragmentManager.findFragmentByTag(FOLDER_FRAGMENT_TAG)!=null) {
+            childFragmentManager.popBackStack()
+            return true
+        }
+        return false
+    }
+
 }

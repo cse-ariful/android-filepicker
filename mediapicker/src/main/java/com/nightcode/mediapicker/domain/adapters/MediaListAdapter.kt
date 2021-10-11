@@ -1,11 +1,9 @@
 package com.nightcode.mediapicker.domain.adapters
 
 import android.annotation.SuppressLint
-import android.telecom.Call
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -14,10 +12,8 @@ import com.bumptech.glide.Glide
 import com.nightcode.mediapicker.R
 import com.nightcode.mediapicker.databinding.*
 import com.nightcode.mediapicker.domain.AppConstants
-import com.nightcode.mediapicker.domain.entities.MediaModel
 import com.nightcode.mediapicker.domain.entities.VideoModel
-import com.nightcode.mediapicker.domain.interfaces.LayoutMode
-import com.nightcode.mediapicker.presentation.ViewExtension.asVisibility
+import com.nightcode.mediapicker.domain.constants.LayoutMode
 import com.nightcode.mediapicker.presentation.ViewExtension.toReadableSize
 import com.nightcode.mediapicker.presentation.ViewExtension.toReadableTime
 
@@ -108,6 +104,9 @@ class MediaListAdapter(
     }
 
     override fun getItemCount(): Int = AppConstants.getTotalItemCountWithNativeAd(items.size)
+    fun getAllItems(): List<VideoModel> {
+        return items
+    }
 }
 
 class VideoItemGridViewHolder(private val binding: ItemVideoGridBinding) :

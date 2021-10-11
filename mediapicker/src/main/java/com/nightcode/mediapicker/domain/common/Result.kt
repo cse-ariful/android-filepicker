@@ -8,5 +8,5 @@ package com.nightcode.mediapicker.domain.common
  */
 sealed class ResultData<out T>{
     data class Success<out T>(val data:T): ResultData<T>()
-    data class Error(val throwable:Throwable?,val message:String?): ResultData<Nothing>()
+    data class Error(val throwable:Throwable?=null,val message:String?=null): ResultData<Nothing>()
 }

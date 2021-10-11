@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Grid or tile"
+        app:showAsAction="always"
+        app:tint="@color/white" />
+
     <item
         android:id="@+id/action_toggle_mode"
         android:icon="@drawable/ic_list_mode"

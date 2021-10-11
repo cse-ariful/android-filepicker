@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,14 +21,15 @@ import com.nightcode.mediapicker.domain.viewModels.mediaList.MyViewModelFactory
 import com.nightcode.mediapicker.presentation.ViewExtension.hide
 import com.nightcode.mediapicker.presentation.ViewExtension.show
 import com.nightcode.mediapicker.domain.adapters.MediaListAdapter
-import com.nightcode.mediapicker.domain.interfaces.LayoutMode
+import com.nightcode.mediapicker.domain.constants.LayoutMode
+import com.nightcode.mediapicker.domain.interfaces.MediaFragment
 import org.arif.converter.fragments.BaseFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 class MediaListFragment :
-    BaseFragment<FragmentMediaListBinding>(FragmentMediaListBinding::inflate) {
+    BaseFragment<FragmentMediaListBinding>(FragmentMediaListBinding::inflate), MediaFragment {
     private val viewModel by viewModels<MediaListViewModel> { MyViewModelFactory(requireContext()) }
     var callback: VideoPickerInterface? = null
     private lateinit var selectedFiles: LiveData<List<VideoModel>>
@@ -150,5 +152,22 @@ class MediaListFragment :
         if (activity is VideoPickerInterface) {
             callback = activity as VideoPickerInterface
         }
+    }
+
+    override fun toggleSelectAll() {
+        callback?.updateSelection(adapter.getAllItems())
+    }
+
+    override fun handleBackPress(): Boolean {
+        return false
+    }
+
+    fun search(query: String?) {
+
+        viewModel.search(query)
+    }
+
+    fun setLayoutMode(mode: LayoutMode) {
+        layoutMode.postValue(mode)
     }
 }

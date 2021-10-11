@@ -26,6 +26,10 @@ object ViewExtension {
     fun View.show() {
         this.visibility = View.VISIBLE
     }
+    fun View.showIf(boolean: Boolean) {
+        if(boolean)show()
+        else hide()
+    }
 
     fun View.hide() {
         this.visibility = View.GONE
