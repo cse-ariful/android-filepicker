@@ -34,7 +34,7 @@ open class MediaFilePickerActivity :
     BaseActivity<ActivityFilePickerBinding>(ActivityFilePickerBinding::inflate),
     VideoPickerInterface {
     companion object {
-        private const val TAG = "FilePickerActivity"
+        const val TAG = "FilePickerActivity"
     }
 
     private val selectedFiles = MutableLiveData<MutableList<VideoModel>>(mutableListOf())
@@ -203,7 +203,12 @@ open class MediaFilePickerActivity :
         super.onBackPressed()
     }
 
+    open fun onActivityResultIntercept(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        return false
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (onActivityResultIntercept(requestCode, resultCode, data)) return
         if (AppConstants.MEDIA_PICK_REQUEST_CODE == requestCode && Activity.RESULT_OK == resultCode && data != null && data.data != null) {
 
             val selectedImageUri: Uri = data.data!!
@@ -212,6 +217,17 @@ open class MediaFilePickerActivity :
                     updateSelection(details.data)
                 }
                 is ResultData.Error -> {
+                    if (selectedImageUri != null) {
+                        updateSelection(
+                            VideoModel(
+                                "Unknown",
+                                selectedImageUri.toString(),
+                                0L,
+                                0L,
+                                ""
+                            )
+                        )
+                    }
                     details.throwable?.printStackTrace()
                     Toast.makeText(this, "Error getting video details", Toast.LENGTH_SHORT).show()
                 }
